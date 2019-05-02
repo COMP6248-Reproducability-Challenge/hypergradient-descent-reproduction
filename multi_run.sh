@@ -5,11 +5,11 @@ do
     for b in "${alpha[@]}"
     do
 	echo "alpha $a beta: $b"
-	python train.py --cuda --model logreg --method sgd     --save --epochs 50 --alpha_0 $a --beta $b --silent
-	python train.py --cuda --model logreg --method sgd_hd  --save --epochs 50 --alpha_0 $a --beta $b --silent
-	python train.py --cuda --model logreg --method sgdn    --save --epochs 50 --alpha_0 $a --beta $b --silent
-	python train.py --cuda --model logreg --method sgdn_hd --save --epochs 50 --alpha_0 $a --beta $b --silent
-	python train.py --cuda --model logreg --method adam    --save --epochs 50 --alpha_0 $a --beta $b --silent
-	python train.py --cuda --model logreg --method adam_hd --save --epochs 50 --alpha_0 $a --beta $b --silent
+	python train.py --model logreg --method sgd	 --save --epochs 50 --alpha_0 $a --beta $b --silent --reduction
+	python train.py	--model logreg --method sgd_hd	 --save --epochs 50 --alpha_0 $a --beta $b --silent --reduction
+	python train.py	--model logreg --method sgdn	 --save --epochs 50 --alpha_0 $a --beta $b --silent --reduction
+	python train.py	--model logreg --method sgdn_hd --save --epochs 50 --alpha_0 $a --beta $b --silent --reduction
+	python train.py	--model logreg --method adam	 --save --epochs 50 --alpha_0 $a --beta $b --silent --reduction
+	python train.py	--model logreg --method adam_hd --save --epochs 50 --alpha_0 $a --beta $b --silent --reduction
     done
 done
