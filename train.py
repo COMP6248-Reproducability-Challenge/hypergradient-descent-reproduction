@@ -16,6 +16,9 @@ from torch.optim import SGD, Adam
 from hypergrad import SGDHD, AdamHD
 
 
+DATASET_REDUCTION_FACTOR = 0.1
+
+
 class LogReg(nn.Module):
     def __init__(self, input_dim, output_dim):
         super(LogReg, self).__init__()
@@ -67,18 +70,24 @@ def train(opt, log_func=None):
 
     if opt.model == 'logreg' or opt.model == 'mlp':
         task = 'MNIST'
-        train_loader = DataLoader(
-            datasets.MNIST('./data', train=True, download=True,
+        x = datasets.MNIST('./data', train=True, download=True,
                            transform=transforms.Compose([
                                transforms.ToTensor(),
                                transforms.Normalize((0.1307,), (0.3081,))
-                           ])),
+                           ]))
+        if opt.reduction:
+            x.data = x.data[:int(len(x.data) * DATASET_REDUCTION_FACTOR)]
+        train_loader = DataLoader(
+            x,
             batch_size=opt.batchSize, shuffle=True)
-        valid_loader = DataLoader(
-            datasets.MNIST('./data', train=False, transform=transforms.Compose([
+        y = datasets.MNIST('./data', train=False, transform=transforms.Compose([
                                transforms.ToTensor(),
                                transforms.Normalize((0.1307,), (0.3081,))
-                           ])),
+                           ]))
+        if opt.reduction:
+            y.data = y.data[:int(len(y.data) * DATASET_REDUCTION_FACTOR)]
+        valid_loader = DataLoader(
+            y,
             batch_size=opt.batchSize, shuffle=False)
     elif opt.model == 'vgg':
         task = 'CIFAR10'
@@ -226,6 +235,7 @@ def main():
         parser.add_argument('--workers', help='number of data loading workers', default=4, type=int)
         parser.add_argument('--parallel', help='parallelize', action='store_true')
         parser.add_argument('--save', help='do not save output to file', action='store_true')
+        parser.add_argument('--reduction', help='reduce the input dataset by a constant factor', action='store_true')
         opt = parser.parse_args()
 
         torch.manual_seed(opt.seed)
