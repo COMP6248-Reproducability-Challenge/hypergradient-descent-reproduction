@@ -99,6 +99,32 @@ class custom_cnn(nn.Module):
         return x
 
 
+class BetterCNN(nn.Module):
+        def __init__(self):
+            super(BetterCNN, self).__init__()
+            self.conv1 = nn.Conv2d(1, 30, (5, 5), padding=0)
+            self.conv2 = nn.Conv2d(30, 15, (3, 3), padding=0)
+            self.fc1 = nn.Linear(15 * 5**2, 128)
+            self.fc2 = nn.Linear(128, 50)
+            self.fc3 = nn.Linear(50, 10)
+    
+        def forward(self, x):
+            out = self.conv1(x)
+            out = F.relu(out)
+            out = F.max_pool2d(out, (2,2))
+            out = self.conv2(out)
+            out = F.relu(out)
+            out = F.max_pool2d(out, (2,2))
+            out = F.dropout(out, 0.2)
+            out = out.view(out.shape[0], -1)
+            out = self.fc1(out)
+            out = F.relu(out)
+            out = self.fc2(out)
+            out = F.relu(out)
+            out = self.fc3(out)
+            return out
+            
+
 def train(opt, log_func=None):
     torch.manual_seed(opt.seed)
     if opt.cuda:
@@ -118,13 +144,17 @@ def train(opt, log_func=None):
         model = custom_cnn()
         if opt.parallel:
             model.features = torch.nn.DataParallel(model.features)
+    elif opt.model == 'better_cnn':
+        model = BetterCNN()
+        if opt.parallel:
+            model.features = torch.nn.DataParallel(model.features)
     else:
         raise Exception('Unknown model: {}'.format(opt.model))
 
     if opt.cuda:
         model = model.cuda()
 
-    if opt.model == 'logreg' or opt.model == 'mlp':
+    if opt.model == 'logreg' or opt.model == 'mlp' or opt.model == 'better_cnn':
         task = 'MNIST'
         x = datasets.MNIST('./data', train=True, download=True,
                            transform=transforms.Compose([
@@ -158,7 +188,6 @@ def train(opt, log_func=None):
             ]), download=True),
             batch_size=opt.batchSize, shuffle=True,
             num_workers=opt.workers, pin_memory=True)
-
         valid_loader = torch.utils.data.DataLoader(
             datasets.CIFAR10(root='./data', train=False, transform=transforms.Compose([
                 transforms.ToTensor(),
@@ -166,6 +195,14 @@ def train(opt, log_func=None):
             ])),
             batch_size=opt.batchSize, shuffle=False,
             num_workers=opt.workers, pin_memory=True)
+        print(len(train_loader.dataset.data))
+        if opt.reduction:
+            # import sys
+            # print("EXITING")
+            # sys.exit(0)
+            train_loader.dataset.data = train_loader.dataset.data[:int(len(train_loader.dataset.data) * DATASET_REDUCTION_FACTOR)]
+            valid_loader.dataset.data = valid_loader.dataset.data[:int(len(valid_loader.dataset.data) * DATASET_REDUCTION_FACTOR)]
+            print(len(train_loader.dataset.data))
     else:
         raise Exception('Unknown model: {}'.format(opt.model))
 
