@@ -33,7 +33,7 @@ opt = parser.parse_args()
 
 os.makedirs(opt.plotDir, exist_ok=True)
 
-model_titles = {'logreg': 'Logistic regression (on MNIST)', 'mlp': 'Multi-layer neural network (on MNIST)', 'vgg': 'VGG Net (on CIFAR-10)'}
+model_titles = {'logreg': 'Logistic regression (on MNIST)', 'mlp': 'Multi-layer neural network (on MNIST)', 'better_cnn': 'better CNN (on MNIST)'}
 for model in next(os.walk(opt.dir))[1]:
     data = {}
     data_epoch = {}
