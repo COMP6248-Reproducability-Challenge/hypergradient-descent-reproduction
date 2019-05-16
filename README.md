@@ -26,12 +26,12 @@ changed sources as follows:
   - __convert\_tensor\_values.sh__: This script postprocess the
 	hypergradient results in order to convert the values saved as
 	tensors to just numerical values.
-  - __multi\_run.sh__: batch script to test the logreg model.
+  - __multi\_run\_logreg.sh__: batch script to test the logreg model.
   - __multi\_run\_better\_cnn.sh__: batch script to test the
 		better_cnn model.
   - __multi\_run\_google\_cloud\_mlp.sh__: batch script to test the
 		mlp model and generate 2/3 of the results.
-  - __multi\_run\_uni\_server.sh__: batch script to test the mlp on
+  - __multi\_run\_uni\_server\_mlp.sh__: batch script to test the mlp on
         the university provided server and generate 1/3 of the
         results. 
 	  
@@ -53,3 +53,16 @@ changed sources as follows:
 	  obtained with the VGG model. The VGG model could not be used
 	  to be extensively tested because of computation and time
 	  constraints.
+
+## How to execute
+To produce the content of the `results` folder, that is for all
+combinations of alpha and beta rates (ranging from 0.1 to 0.000001),
+all the optimizers (adam, adam\_hd, sgd, sgd\_hd, sgdn and sgnd\_hd) and
+all the models (better_cnn, logreg and mlp), run the following:
+
+`bash script_utilities/multi_run_*.sh`
+
+This will run the bash scripts that performs batch testing on the
+models using the a reduced version of the MNIST dataset. To reproduce
+the results of just one model run the corresponding bash script inside
+`script_utilities`.
