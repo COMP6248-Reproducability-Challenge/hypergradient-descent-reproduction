@@ -14,7 +14,7 @@ changed sources as follows:
 
 - __plots__: This folder contains the plots obtained by plotting the
   reproduced results. Each subfolder is named accordingly to the
-  paper's figure that is being reproduced. 
+  paper's figures that is being reproduced. 
 - __results__: This folder contains the .csv files containing the
   reproduced results. The folder contains one subfolder for each
   tested deep learning method. Each subfolder contains a subfolder for
@@ -33,12 +33,17 @@ changed sources as follows:
 		mlp model and generate 2/3 of the results.
   - __multi\_run\_uni\_server\_mlp.sh__: batch script to test the mlp on
         the university provided server and generate 1/3 of the
-        results. 
-	  
-- __plot.py__: This file contains the sources to reproduce the plots
-  in the paper. The file matches the original except for a
+        results.
+- __plot.py__: This file contains the sources to reproduce the figure
+  3 plots in the paper. The file matches the original except for a
   matplotlib compatibility issue solved regarding newer pytorch
   versions.
+- __plot\_figure2.ipynb__: This file contains the sources to reproduce
+  the figure2 plots of the paper.
+- __plot\_figure4\_first\_half.ipynb__: This file contains the sources to reproduce
+  the first half of figure4 plots of the paper.
+- __plot\_figure4\_second\_half.ipynb__: This file contains the sources to reproduce
+  the second half of figure4 plots of the paper.
 - __train.py__: This file contains the code source to define and train
   the deep learning models. We can outline the changelog as follows:
   - Fixed compatibility issue with new pytorch version. When
