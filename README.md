@@ -66,3 +66,36 @@ This will run the bash scripts that performs batch testing on the
 models using the a reduced version of the MNIST dataset. To reproduce
 the results of just one model run the corresponding bash script inside
 `script_utilities`.
+
+## Resources and computational times
+
+The reproduction of the results for the logreg, mlp and better_cnn
+models involved the use of the following scripts, resources and
+computational time:
+
+- __results/logreg__:
+
+	- *script*: multi_run_logreg.sh
+	- *resources*: 5 EUR digital ocean droplet with 1GB RAM, 1vCPU,
+      25GB ssd disk.
+	- *time to execute*: Approximately 9 hours
+	
+- __results/mlp 1/3__:
+
+	- *script*: multi_run_uni_server_mlp.sh
+	- *resources*: University of Southampton GPU-server with 128GB
+      RAM, 2x Intel Xeon E5-2623 v4 2.6GHz 8 thread CPUs, 4x Nvidia
+      GTX 1080TI GPU cards each with 3584 cores and 11GB RAM.
+	- *time to execute*: Approximately 6 hours
+	
+- __results/mlp 2/3__:
+
+	- *script*: multi_run_google_cloud_mlp.sh
+	- *resources*: Google cloud droplet with 8 vCPUs and 52 GB RAM.
+	- *time to execute*: Approximately 8 hours.
+	
+- __results/better_cnn__:
+
+	- *script*: multi_run_better_cnn.sh
+	- *resources*: Google cloud droplet with 8 vCPUs and 52 GB RAM.
+	- *time to execute*: Approximately 14 hours.
